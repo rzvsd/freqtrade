@@ -4,11 +4,22 @@ config*.json
 *.sqlite-shm
 *.sqlite-wal
 logfile.txt
+# --- Custom User Data Rules ---
+# Ignore everything in user_data by default...
 user_data/*
-!user_data/strategy/sample_strategy.py
-!user_data/notebooks
-!user_data/models
-!user_data/freqaimodels
+
+# ...but make exceptions for the things we want to save.
+# The "!" negates the rule above for these specific paths.
+!user_data/strategies/
+!user_data/config.json
+!user_data/hyperopt_results/
+!user_data/notebooks/
+!user_data/freqaimodels/
+!user_data/.gitkeep
+
+# Ignore the large hyperopt database files
+user_data/hyperopt_results/*.fthypt
+
 user_data/freqaimodels/*
 user_data/models/*
 user_data/notebooks/*

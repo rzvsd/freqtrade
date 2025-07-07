@@ -1,0 +1,46 @@
+{
+  "strategy_name": "HyperoptCloudTrendRider",
+  "params": {
+    "trailing": {
+      "trailing_stop": false,
+      "trailing_stop_positive": null,
+      "trailing_stop_positive_offset": 0.0,
+      "trailing_only_offset_is_reached": false
+    },
+    "max_open_trades": {
+      "max_open_trades": 5
+    },
+    "buy": {
+      "divergence_lookback": 20,
+      "ema_fast2_1d": 26,
+      "ema_fast_1d": 18,
+      "ema_long_period": 14,
+      "ema_short_period": 6,
+      "ema_signal_period": 16,
+      "ema_slow2_1d": 207,
+      "ema_slow_1d": 57,
+      "rsi_bull_threshold": 35,
+      "rsi_period": 20,
+      "volume_ma_period": 20,
+      "volume_spike_threshold": 1.9
+    },
+    "sell": {
+      "ce_lookback": 11,
+      "ce_multiplier": 2.1,
+      "rsi_bear_threshold": 57,
+      "stop_loss": -0.047
+    },
+    "protection": {},
+    "roi": {
+      "0": 0.335,
+      "466": 0.18,
+      "1084": 0.083,
+      "1980": 0
+    },
+    "stoploss": {
+      "stoploss": -0.214
+    }
+  },
+  "ft_stratparam_v": 1,
+  "export_time": "2025-07-06 23:45:56.312949+00:00"
+}
