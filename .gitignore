@@ -127,3 +127,7 @@ target/
 !config_examples/config_freqai.example.json
 
 docker-compose-*.yml
+
+# Ignore hyperopt cache and result files
+user_data/hyperopt_results/hyperopt_tickerdata.pkl
+user_data/strategies/*.json

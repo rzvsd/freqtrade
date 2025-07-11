@@ -55,7 +55,7 @@
     "max_entry_position_adjustment": 3,
     "api_server": {
         "enabled": true,
-        "listen_ip_address": "127.0.0.1",
+        "listen_ip_address": "0.0.0.0",
         "listen_port": 8080,
         "verbosity": "error",
         "enable_openapi": false,
@@ -70,7 +70,7 @@
     "internals": {
         "process_throttle_secs": 5
     },
-    "strategy": "CloudTrendRider",
+    "strategy": "CitadelV3_Optimized",
     "strategy_path": "user_data/strategies/",
     "stoploss": -0.02,
     "user_data_dir": "user_data",
