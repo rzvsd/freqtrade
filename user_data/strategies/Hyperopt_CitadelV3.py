@@ -16,7 +16,7 @@ class Hyperopt_CitadelV3(IStrategy):
     """
     Citadel System - Version 3.0 HYPEROPT - LONG ONLY
     
-    This is the hyperopt version of CitadelV3_LONG_Strategy.
+    
     All key parameters are now optimizable to find the best combinations.
     
     Optimizable parameters:
