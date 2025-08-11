@@ -38,7 +38,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
     - name: Install uv
-      uses: astral-sh/setup-uv@bd01e18f51369d5a26f1651c3cb451d3417e3bba # v6.3.1
+      uses: astral-sh/setup-uv@e92bafb6253dcd438e0484186d7669ea7a8ca1cc # v6.4.3
       with:
         activate-environment: true
         enable-cache: true
@@ -174,7 +174,7 @@ jobs:
         check-latest: true
 
     - name: Install uv
-      uses: astral-sh/setup-uv@bd01e18f51369d5a26f1651c3cb451d3417e3bba # v6.3.1
+      uses: astral-sh/setup-uv@e92bafb6253dcd438e0484186d7669ea7a8ca1cc # v6.4.3
       with:
         activate-environment: true
         enable-cache: true
@@ -301,7 +301,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
     - name: Install uv
-      uses: astral-sh/setup-uv@bd01e18f51369d5a26f1651c3cb451d3417e3bba # v6.3.1
+      uses: astral-sh/setup-uv@e92bafb6253dcd438e0484186d7669ea7a8ca1cc # v6.4.3
       with:
         activate-environment: true
         enable-cache: true
@@ -449,7 +449,7 @@ jobs:
         python-version: "3.12"
 
     - name: Install uv
-      uses: astral-sh/setup-uv@bd01e18f51369d5a26f1651c3cb451d3417e3bba # v6.3.1
+      uses: astral-sh/setup-uv@e92bafb6253dcd438e0484186d7669ea7a8ca1cc # v6.4.3
       with:
         activate-environment: true
         enable-cache: true
@@ -580,7 +580,7 @@ jobs:
         persist-credentials: false
 
     - name: Download artifact  📦
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       with:
         pattern: freqtrade*-build
         path: dist
@@ -609,7 +609,7 @@ jobs:
         persist-credentials: false
 
     - name: Download artifact  📦
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       with:
         pattern: freqtrade*-build
         path: dist

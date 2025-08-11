@@ -93,14 +93,16 @@ class FreqtradeBot(LoggingMixin):
         # Remove credentials from original exchange config to avoid accidental credential exposure
         remove_exchange_credentials(config["exchange"], True)
 
+        self.exchange = ExchangeResolver.load_exchange(
+            self.config, exchange_config=exchange_config, load_leverage_tiers=True
+        )
+
         self.strategy: IStrategy = StrategyResolver.load_strategy(self.config)
 
         # Check config consistency here since strategies can set certain options
         validate_config_consistency(config)
-
-        self.exchange = ExchangeResolver.load_exchange(
-            self.config, exchange_config=exchange_config, load_leverage_tiers=True
-        )
+        # Re-validate exchange compatibility
+        self.exchange.validate_config(self.config)
 
         init_db(self.config["db_url"])
 
@@ -1214,6 +1216,7 @@ class FreqtradeBot(LoggingMixin):
             "leverage": trade.leverage if trade.leverage else None,
             "direction": "Short" if trade.is_short else "Long",
             "limit": open_rate,  # Deprecated (?)
+            "order_rate": open_rate,
             "open_rate": open_rate,
             "order_type": order_type or "unknown",
             "stake_amount": stake_amount,
@@ -1250,6 +1253,7 @@ class FreqtradeBot(LoggingMixin):
             "leverage": trade.leverage,
             "direction": "Short" if trade.is_short else "Long",
             "limit": trade.open_rate,
+            "order_rate": trade.open_rate,
             "order_type": order_type,
             "stake_amount": trade.stake_amount,
             "open_rate": trade.open_rate,
@@ -2245,6 +2249,7 @@ class FreqtradeBot(LoggingMixin):
             "direction": "Short" if trade.is_short else "Long",
             "gain": gain,
             "limit": profit_rate or 0,
+            "order_rate": profit_rate or 0,
             "order_type": order_type,
             "amount": order.safe_amount_after_fee,
             "open_rate": trade.open_rate,
@@ -2335,7 +2340,7 @@ class FreqtradeBot(LoggingMixin):
 
     def _update_trade_after_fill(self, trade: Trade, order: Order, send_msg: bool) -> Trade:
         if order.status in constants.NON_OPEN_EXCHANGE_STATES:
-            strategy_safe_wrapper(self.strategy.order_filled, default_retval=None)(
+            strategy_safe_wrapper(self.strategy.order_filled, supress_error=True)(
                 pair=trade.pair, trade=trade, order=order, current_time=datetime.now(UTC)
             )
             # If a entry order was closed, force update on stoploss on exchange
@@ -2363,14 +2368,14 @@ class FreqtradeBot(LoggingMixin):
                     stake_currency=self.config["stake_currency"],
                     dry_run=self.config["dry_run"],
                 )
-                if self.strategy.use_custom_stoploss:
-                    current_rate = self.exchange.get_rate(
-                        trade.pair, side="exit", is_short=trade.is_short, refresh=True
-                    )
-                    profit = trade.calc_profit_ratio(current_rate)
-                    self.strategy.ft_stoploss_adjust(
-                        current_rate, trade, datetime.now(UTC), profit, 0, after_fill=True
-                    )
+            if self.strategy.use_custom_stoploss and trade.is_open:
+                current_rate = self.exchange.get_rate(
+                    trade.pair, side="exit", is_short=trade.is_short, refresh=True
+                )
+                profit = trade.calc_profit_ratio(current_rate)
+                self.strategy.ft_stoploss_adjust(
+                    current_rate, trade, datetime.now(UTC), profit, 0, after_fill=True
+                )
             # Updating wallets when order is closed
             self.wallets.update()
         return trade
